@@ -11,7 +11,7 @@
         <relativePath/>
     </parent>
 
-    <groupId>xalbrech.exercises.sw</groupId>
+    <groupId>xalbrech.exercises.starwars</groupId>
     <artifactId>star-wars-search</artifactId>
     <version>1.0-SNAPSHOT</version>
 

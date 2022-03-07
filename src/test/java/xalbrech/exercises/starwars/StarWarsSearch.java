@@ -1,3 +1,5 @@
+package xalbrech.exercises.starwars;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
@@ -18,4 +20,5 @@ public class StarWarsSearch {
     public static void main(String[] args) {
         SpringApplication.run(StarWarsSearch.class, args);
     }
+
 }
