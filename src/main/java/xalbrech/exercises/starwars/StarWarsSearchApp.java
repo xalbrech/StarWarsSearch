@@ -8,10 +8,6 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-
 @SpringBootConfiguration
 public class StarWarsSearchApp {
 
@@ -28,8 +24,8 @@ public class StarWarsSearchApp {
     }
 
     @Bean
-    public ApiSearcher apiSearcher() {
-        return new ApiSearcher();
+    public SearchIndex searchIndex() {
+        return new SearchIndex();
     }
 
     public static void main(String[] args) {
