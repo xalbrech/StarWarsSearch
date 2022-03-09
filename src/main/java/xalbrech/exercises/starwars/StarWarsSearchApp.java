@@ -40,7 +40,7 @@ public class StarWarsSearchApp {
     public CommandLineRunner run(ApiCrawler apiCrawler, SearchIndex searchIndex) throws Exception {
         return args -> {
             apiCrawler.crawl();
-            log.info("{}", searchIndex.search("Tatooine"));
+            log.debug("Test call - results of search for \"Tatooine\" {}", searchIndex.search("Tatooine"));
         };
     }
 
