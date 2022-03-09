@@ -7,6 +7,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import xalbrech.exercises.starwars.crawler.mapping.Planet;
+import xalbrech.exercises.starwars.crawler.mapping.PlanetsResult;
 import xalbrech.exercises.starwars.index.SearchIndex;
 
 import java.net.URL;

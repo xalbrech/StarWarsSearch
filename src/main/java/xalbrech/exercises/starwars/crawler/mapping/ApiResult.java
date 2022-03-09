@@ -1,4 +1,4 @@
-package xalbrech.exercises.starwars.crawler;
+package xalbrech.exercises.starwars.crawler.mapping;
 
 import java.net.URL;
 import java.util.Collection;
