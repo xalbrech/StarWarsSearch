@@ -44,9 +44,8 @@ public class ApiCrawler {
             addUrlsToIndexWithKeyword(name, p.getFilms());
             addUrlsToIndexWithKeyword(name, p.getResidents());
             searchIndex.addItemToIndex(name, p.getUrl());
-            log.info("Indexing planet. Name: {}, URL: {}\n films: {}\n residents: {}", name, p.getUrl(), p.getFilms(), p.getResidents());
+            log.debug("Indexing planet. Name: {}, URL: {}\n films: {}\n residents: {}", name, p.getUrl(), p.getFilms(), p.getResidents());
         });
-
     }
 
 }
