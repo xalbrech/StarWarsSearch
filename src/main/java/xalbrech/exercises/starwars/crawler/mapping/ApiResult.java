@@ -3,15 +3,15 @@ package xalbrech.exercises.starwars.crawler.mapping;
 import java.net.URL;
 import java.util.Collection;
 
-public class ApiResult<T> {
+/**
+ * Mapping of the result of an SW API call. Maps the common fields of the response
+ * that search needs (next url and the array of results).
+ * @param <T> Type of the result, to be specd in extension classes.
+ */
+public abstract class ApiResult<T> {
 
-    private int count;
     private URL next;
     private Collection<T> results;
-
-    public void setCount(int count) {
-        this.count = count;
-    }
 
     public void setNext(URL next) {
         this.next = next;
@@ -19,10 +19,6 @@ public class ApiResult<T> {
 
     public void setResults(Collection<T> results) {
         this.results = results;
-    }
-
-    public int getCount() {
-        return count;
     }
 
     public URL getNext() {

@@ -3,6 +3,10 @@ package xalbrech.exercises.starwars.crawler.mapping;
 import java.net.URL;
 import java.util.Collection;
 
+/**
+ * Mapping class for results of the planet resource - https://swapi.dev/api/planets/
+ * Only maps the fields the search needs: name, url, residents, films
+ */
 public class Planet {
 
     private String name;
