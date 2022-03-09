@@ -1,4 +1,4 @@
-package xalbrech.exercises.starwars;
+package xalbrech.exercises.starwars.index;
 
 import java.net.URL;
 import java.util.*;
