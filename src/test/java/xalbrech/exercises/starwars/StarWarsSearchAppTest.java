@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-@SpringBootTest(classes = StarWarsSearchApp.class)
+//@SpringBootTest(classes = StarWarsSearchApp.class)
 public class StarWarsSearchAppTest {
 
     private static final Logger log = LoggerFactory.getLogger(StarWarsSearchAppTest.class);

@@ -1,6 +1,6 @@
 package xalbrech.exercises.starwars.crawler.mapping;
 
-import java.net.URL;
+import java.net.URI;
 import java.util.Collection;
 
 /**
@@ -10,19 +10,19 @@ import java.util.Collection;
  */
 public abstract class ApiResult<T> {
 
-    private URL next;
+    private URI next;
     private Collection<T> results;
 
-    public void setNext(URL next) {
-        this.next = next;
+    public URI getNext() {
+        return next;
     }
 
     public void setResults(Collection<T> results) {
         this.results = results;
     }
 
-    public URL getNext() {
-        return next;
+    public void setNext(URI next) {
+        this.next = next;
     }
 
     public Collection<T> getResults() {

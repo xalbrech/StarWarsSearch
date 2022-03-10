@@ -3,14 +3,14 @@ package xalbrech.exercises.starwars.crawler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import xalbrech.exercises.starwars.crawler.mapping.ApiEndpointList;
 import xalbrech.exercises.starwars.crawler.mapping.Planet;
 import xalbrech.exercises.starwars.crawler.mapping.PlanetsResult;
 import xalbrech.exercises.starwars.index.SearchIndex;
 
+import java.net.URI;
 import java.net.URL;
 import java.util.Collection;
 
@@ -33,19 +33,26 @@ public class ApiCrawler {
 
     public void crawl() {
 
-        ResponseEntity<PlanetsResult> response = restTemplate.exchange(
-                RequestEntity.get("https://swapi.dev/api/planets")
-                        .accept(MediaType.APPLICATION_JSON)
-                        .build(), PlanetsResult.class);
+        ApiEndpointList endpointList = restTemplate
+                    .getForEntity("https://swapi.dev/api/", ApiEndpointList.class)
+                    .getBody();
 
-        Collection<Planet> planets = response.getBody().getResults();
-        planets.stream().forEach(p -> {
-            String name = p.getName();
-            addUrlsToIndexWithKeyword(name, p.getFilms());
-            addUrlsToIndexWithKeyword(name, p.getResidents());
-            searchIndex.addItemToIndex(name, p.getUrl());
-            log.debug("Indexing planet. Name: {}, URL: {}\n films: {}\n residents: {}", name, p.getUrl(), p.getFilms(), p.getResidents());
-        });
+        URI nextUrl = endpointList.get("planets");
+
+        do {
+            ResponseEntity<PlanetsResult> response = restTemplate.getForEntity(nextUrl, PlanetsResult.class);
+
+            Collection<Planet> planets = response.getBody().getResults();
+            planets.stream().forEach(p -> {
+                String name = p.getName();
+                addUrlsToIndexWithKeyword(name, p.getFilms());
+                addUrlsToIndexWithKeyword(name, p.getResidents());
+                searchIndex.addItemToIndex(name, p.getUrl());
+                log.debug("Indexing planet. Name: {}, URL: {}\n films: {}\n residents: {}", name, p.getUrl(), p.getFilms(), p.getResidents());
+            });
+            nextUrl = response.getBody().getNext();
+
+        } while(nextUrl != null);
     }
 
 }

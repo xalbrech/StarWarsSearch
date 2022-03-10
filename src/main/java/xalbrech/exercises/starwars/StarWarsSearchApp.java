@@ -19,10 +19,10 @@ public class StarWarsSearchApp {
 
     private static final Logger log = LoggerFactory.getLogger(StarWarsSearchApp.class);
 
-    @Bean
+    /*@Bean
     public RestTemplateBuilder restTemplateBuilder() {
         return new RestTemplateBuilder();
-    }
+    }*/
 
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
