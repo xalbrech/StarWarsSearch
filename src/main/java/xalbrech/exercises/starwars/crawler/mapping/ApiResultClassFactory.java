@@ -10,6 +10,10 @@ public class ApiResultClassFactory {
     static {
         apiObjectConstructors.put("people", PeopleResult.class);
         apiObjectConstructors.put("planets", PlanetsResult.class);
+        apiObjectConstructors.put("species", SpeciesResult.class);
+        apiObjectConstructors.put("vehicles", VehiclesResult.class);
+        apiObjectConstructors.put("starships", StarshipsResult.class);
+        apiObjectConstructors.put("films", FilmsResult.class);
     }
 
     public static Class<? extends ApiResult> getResultForEndpointName(String type) {
