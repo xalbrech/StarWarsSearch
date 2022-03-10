@@ -1,5 +1,6 @@
 package xalbrech.exercises.starwars.index;
 
+import java.net.URI;
 import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -11,15 +12,15 @@ import java.util.stream.Stream;
 public class SearchIndex {
 
     // The index itself is a multi-map, maintaining a set of URLs for each keyword.
-    Map<String, Set<URL>> index = new HashMap<>();
+    Map<String, Set<URI>> index = new HashMap<>();
 
     /**
      * Add a new item to index.
      * @param keyword keyword to find the new item at
      * @param url URL of the item
      */
-    public void addItemToIndex(String keyword, URL url) {
-        index.computeIfAbsent(keyword, k -> new HashSet<>()).add(url);
+    public void addItemToIndex(String keyword, URI uri) {
+        index.computeIfAbsent(keyword, k -> new HashSet<>()).add(uri);
     }
 
     /**
@@ -28,7 +29,7 @@ public class SearchIndex {
      * @param phrase search string
      * @return Collection of URLs found based on the search phrase
      */
-    public Collection<URL> search(String phrase) {
+    public Collection<URI> search(String phrase) {
 
         if (phrase == null || "".equals(phrase)) {
             return Collections.emptyList();
@@ -41,6 +42,5 @@ public class SearchIndex {
                       .flatMap(Set::stream)
                       .collect(Collectors.toList());
     }
-
 
 }

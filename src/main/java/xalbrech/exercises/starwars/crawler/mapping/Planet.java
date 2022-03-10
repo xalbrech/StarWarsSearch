@@ -1,6 +1,8 @@
 package xalbrech.exercises.starwars.crawler.mapping;
 
-import java.net.URL;
+import xalbrech.exercises.starwars.index.SearchIndex;
+
+import java.net.URI;
 import java.util.Collection;
 
 /**
@@ -10,23 +12,23 @@ import java.util.Collection;
 public class Planet {
 
     private String name;
-    private URL url;
-    private Collection<URL> residents;
-    private Collection<URL> films;
+    private URI url;
+    private Collection<URI> residents;
+    private Collection<URI> films;
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setUrl(URL url) {
-        this.url = url;
+    public Collection<URI> getResidents() {
+        return residents;
     }
 
-    public void setResidents(Collection<URL> residents) {
+    public void setResidents(Collection<URI> residents) {
         this.residents = residents;
     }
 
-    public void setFilms(Collection<URL> films) {
+    public void setFilms(Collection<URI> films) {
         this.films = films;
     }
 
@@ -34,15 +36,17 @@ public class Planet {
         return name;
     }
 
-    public Collection<URL> getResidents() {
-        return residents;
-    }
-
-    public Collection<URL> getFilms() {
+    public Collection<URI> getFilms() {
         return films;
     }
 
-    public URL getUrl() {
+    public URI getUrl() {
         return url;
     }
+
+    public void setUrl(URI url) {
+        this.url = url;
+    }
+
+
 }

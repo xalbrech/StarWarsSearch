@@ -1,5 +1,7 @@
 package xalbrech.exercises.starwars.crawler.mapping;
 
+import xalbrech.exercises.starwars.index.SearchIndex;
+
 import java.net.URI;
 import java.util.Collection;
 
@@ -28,5 +30,6 @@ public abstract class ApiResult<T> {
     public Collection<T> getResults() {
         return results;
     }
+
 
 }

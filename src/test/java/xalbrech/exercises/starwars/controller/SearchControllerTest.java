@@ -8,7 +8,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import xalbrech.exercises.starwars.index.SearchIndex;
 
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -30,7 +30,7 @@ class SearchControllerTest {
 
     @Test
     public void searchReachesSearchIndex() throws MalformedURLException {
-        Collection<URL> searchIndexReply = Arrays.asList(new URL("http://test/url"));
+        Collection<URI> searchIndexReply = Arrays.asList(URI.create("http://test/url"));
         when(searchIndex.search("test")).thenReturn(searchIndexReply);
 
         SearchResult result = searchController.search("test");

@@ -1,14 +1,14 @@
 package xalbrech.exercises.starwars.controller;
 
-import java.net.URL;
+import java.net.URI;
 import java.util.Collection;
 
 public class SearchResult {
 
     private String searchTerm;
-    private Collection<URL> searchResults;
+    private Collection<URI> searchResults;
 
-    public SearchResult(String searchTerm, Collection<URL> searchResults) {
+    public SearchResult(String searchTerm, Collection<URI> searchResults) {
         this.searchTerm = searchTerm;
         this.searchResults = searchResults;
     }
@@ -17,7 +17,7 @@ public class SearchResult {
         return searchTerm;
     }
 
-    public Collection<URL> getSearchResults() {
+    public Collection<URI> getSearchResults() {
         return searchResults;
     }
 }

@@ -15,7 +15,6 @@ import xalbrech.exercises.starwars.index.SearchIndex;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -111,18 +110,18 @@ public class ApiCrawlerTest {
 
         crawler.crawl();
 
-        verify(searchIndex).addItemToIndex("Tatooine", new URL("https://swapi.dev/api/planets/1/"));
-        verify(searchIndex).addItemToIndex("Tatooine", new URL("https://swapi.dev/api/people/1/"));
-        verify(searchIndex).addItemToIndex("Tatooine", new URL("https://swapi.dev/api/people/2/"));
-        verify(searchIndex).addItemToIndex("Tatooine", new URL("https://swapi.dev/api/films/1/"));
-        verify(searchIndex).addItemToIndex("Tatooine", new URL("https://swapi.dev/api/films/3/"));
+        verify(searchIndex).addItemToIndex("Tatooine", new URI("https://swapi.dev/api/planets/1/"));
+        verify(searchIndex).addItemToIndex("Tatooine", new URI("https://swapi.dev/api/people/1/"));
+        verify(searchIndex).addItemToIndex("Tatooine", new URI("https://swapi.dev/api/people/2/"));
+        verify(searchIndex).addItemToIndex("Tatooine", new URI("https://swapi.dev/api/films/1/"));
+        verify(searchIndex).addItemToIndex("Tatooine", new URI("https://swapi.dev/api/films/3/"));
 
-        verify(searchIndex).addItemToIndex("Alderaan", new URL("https://swapi.dev/api/planets/2/"));
-        verify(searchIndex).addItemToIndex("Alderaan", new URL("https://swapi.dev/api/people/5/"));
-        verify(searchIndex).addItemToIndex("Alderaan", new URL("https://swapi.dev/api/people/68/"));
+        verify(searchIndex).addItemToIndex("Alderaan", new URI("https://swapi.dev/api/planets/2/"));
+        verify(searchIndex).addItemToIndex("Alderaan", new URI("https://swapi.dev/api/people/5/"));
+        verify(searchIndex).addItemToIndex("Alderaan", new URI("https://swapi.dev/api/people/68/"));
 
-        verify(searchIndex).addItemToIndex("Yavin IV", new URL("https://swapi.dev/api/planets/3/"));
-        verify(searchIndex).addItemToIndex("Yavin IV", new URL("https://swapi.dev/api/films/1/"));
+        verify(searchIndex).addItemToIndex("Yavin IV", new URI("https://swapi.dev/api/planets/3/"));
+        verify(searchIndex).addItemToIndex("Yavin IV", new URI("https://swapi.dev/api/films/1/"));
 
         verifyNoMoreInteractions(searchIndex);
         mockRestServiceServer.verify();

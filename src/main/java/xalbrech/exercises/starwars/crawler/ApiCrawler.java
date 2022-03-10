@@ -11,7 +11,6 @@ import xalbrech.exercises.starwars.crawler.mapping.PlanetsResult;
 import xalbrech.exercises.starwars.index.SearchIndex;
 
 import java.net.URI;
-import java.net.URL;
 import java.util.Collection;
 
 /**
@@ -26,11 +25,6 @@ public class ApiCrawler {
     @Autowired
     private RestTemplate restTemplate;
 
-
-    private void addUrlsToIndexWithKeyword(String keyword, Collection<URL> urls) {
-        urls.stream().forEach(url -> searchIndex.addItemToIndex(keyword, url));
-    }
-
     public void crawl() {
 
         ApiEndpointList endpointList = restTemplate
@@ -41,17 +35,8 @@ public class ApiCrawler {
 
         do {
             ResponseEntity<PlanetsResult> response = restTemplate.getForEntity(nextUrl, PlanetsResult.class);
-
-            Collection<Planet> planets = response.getBody().getResults();
-            planets.stream().forEach(p -> {
-                String name = p.getName();
-                addUrlsToIndexWithKeyword(name, p.getFilms());
-                addUrlsToIndexWithKeyword(name, p.getResidents());
-                searchIndex.addItemToIndex(name, p.getUrl());
-                log.debug("Indexing planet. Name: {}, URL: {}\n films: {}\n residents: {}", name, p.getUrl(), p.getFilms(), p.getResidents());
-            });
+            response.getBody().populateSearchIndexWithResults(searchIndex);
             nextUrl = response.getBody().getNext();
-
         } while(nextUrl != null);
     }
 
