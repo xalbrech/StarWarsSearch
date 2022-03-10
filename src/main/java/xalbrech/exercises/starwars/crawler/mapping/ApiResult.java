@@ -10,7 +10,7 @@ import java.util.Collection;
  * that search needs (next url and the array of results).
  * @param <T> Type of the result, to be specd in extension classes.
  */
-public abstract class ApiResult<T> {
+public abstract class ApiResult<T extends ApiObject> {
 
     private URI next;
     private Collection<T> results;
@@ -31,5 +31,8 @@ public abstract class ApiResult<T> {
         return results;
     }
 
+    public void populateSearchIndexWithResults(SearchIndex searchIndex) {
+        getResults().stream().forEach(o -> o.populateSearchIndex(searchIndex));
+    }
 
 }

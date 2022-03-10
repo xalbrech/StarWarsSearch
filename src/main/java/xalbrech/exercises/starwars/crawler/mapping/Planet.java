@@ -9,16 +9,10 @@ import java.util.Collection;
  * Mapping class for results of the planet resource - https://swapi.dev/api/planets/
  * Only maps the fields the search needs: name, url, residents, films
  */
-public class Planet {
+public class Planet extends ApiObject {
 
-    private String name;
-    private URI url;
     private Collection<URI> residents;
     private Collection<URI> films;
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public Collection<URI> getResidents() {
         return residents;
@@ -32,21 +26,12 @@ public class Planet {
         this.films = films;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public Collection<URI> getFilms() {
         return films;
     }
 
-    public URI getUrl() {
-        return url;
+    @Override
+    protected void addReferencesInObjectToIndex(SearchIndex searchIndex) {
+        addUrlsToIndexWithObjectName(searchIndex, getFilms(), getResidents());
     }
-
-    public void setUrl(URI url) {
-        this.url = url;
-    }
-
-
 }
