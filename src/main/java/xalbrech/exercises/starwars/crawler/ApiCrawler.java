@@ -6,12 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import xalbrech.exercises.starwars.crawler.mapping.ApiEndpointList;
-import xalbrech.exercises.starwars.crawler.mapping.Planet;
-import xalbrech.exercises.starwars.crawler.mapping.PlanetsResult;
+import xalbrech.exercises.starwars.crawler.mapping.ApiResultClassFactory;
+import xalbrech.exercises.starwars.crawler.mapping.ApiResult;
 import xalbrech.exercises.starwars.index.SearchIndex;
 
 import java.net.URI;
-import java.util.Collection;
 
 /**
  * Traverses the API and populates the search index with data found
@@ -28,16 +27,24 @@ public class ApiCrawler {
     public void crawl() {
 
         ApiEndpointList endpointList = restTemplate
-                    .getForEntity("https://swapi.dev/api/", ApiEndpointList.class)
-                    .getBody();
+                .getForEntity("https://swapi.dev/api/", ApiEndpointList.class)
+                .getBody();
 
-        URI nextUrl = endpointList.get("planets");
+        endpointList
+                .keySet()
+                .stream()
+                .forEach(endpointName -> {
+                    URI nextUrl = endpointList.get(endpointName);
+                    Class<? extends ApiResult> objectResultClass = ApiResultClassFactory.getResultForEndpointName(endpointName);
+                    if (objectResultClass != null)
+                    do {
+                        ResponseEntity<? extends ApiResult> response = restTemplate.getForEntity(nextUrl, objectResultClass);
+                        response.getBody().populateSearchIndexWithResults(searchIndex);
+                        nextUrl = response.getBody().getNext();
+                    } while (nextUrl != null);
+                });
 
-        do {
-            ResponseEntity<PlanetsResult> response = restTemplate.getForEntity(nextUrl, PlanetsResult.class);
-            response.getBody().populateSearchIndexWithResults(searchIndex);
-            nextUrl = response.getBody().getNext();
-        } while(nextUrl != null);
+
     }
 
 }

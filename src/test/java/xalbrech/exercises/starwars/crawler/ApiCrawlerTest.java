@@ -1,6 +1,5 @@
 package xalbrech.exercises.starwars.crawler;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -37,24 +36,19 @@ public class ApiCrawlerTest {
     @Autowired
     private ApiCrawler crawler;
 
-    @BeforeEach
-    public void init() throws URISyntaxException {
+    @Test
+    public void crawlPlanets_OverMultiplePages() throws URISyntaxException, MalformedURLException {
+
         mockRestServiceServer.expect(ExpectedCount.once(),
-                        requestTo(new URI("https://swapi.dev/api/")))
+                        requestTo(URI.create("https://swapi.dev/api/")))
                 .andRespond(withStatus(HttpStatus.OK)
                         .contentType(MediaType.APPLICATION_JSON)
                         .body("{ " +
-                                " \"people\": \"https://swapi.dev/api/people/\", " +
-                                " \"planets\": \"https://swapi.dev/api/planets/\", " +
-                                " \"films\": \"https://swapi.dev/api/films/\" " +
+                                " \"planets\": \"https://swapi.dev/api/planets/\"" +
                                 "} "));
-    }
-
-    @Test
-    public void crawlPlanets() throws URISyntaxException, MalformedURLException {
 
         mockRestServiceServer.expect(ExpectedCount.once(),
-                        requestTo(new URI("https://swapi.dev/api/planets/")))
+                        requestTo(URI.create("https://swapi.dev/api/planets/")))
                 .andRespond(withStatus(HttpStatus.OK)
                         .contentType(MediaType.APPLICATION_JSON)
                         .body("{" +
@@ -88,7 +82,7 @@ public class ApiCrawlerTest {
 
 
         mockRestServiceServer.expect(ExpectedCount.once(),
-                        requestTo(new URI("https://swapi.dev/api/planets/?page=2")))
+                        requestTo(URI.create("https://swapi.dev/api/planets/?page=2")))
                 .andRespond(withStatus(HttpStatus.OK)
                         .contentType(MediaType.APPLICATION_JSON)
                         .body("{" +
@@ -110,22 +104,137 @@ public class ApiCrawlerTest {
 
         crawler.crawl();
 
-        verify(searchIndex).addItemToIndex("Tatooine", new URI("https://swapi.dev/api/planets/1/"));
-        verify(searchIndex).addItemToIndex("Tatooine", new URI("https://swapi.dev/api/people/1/"));
-        verify(searchIndex).addItemToIndex("Tatooine", new URI("https://swapi.dev/api/people/2/"));
-        verify(searchIndex).addItemToIndex("Tatooine", new URI("https://swapi.dev/api/films/1/"));
-        verify(searchIndex).addItemToIndex("Tatooine", new URI("https://swapi.dev/api/films/3/"));
+        verify(searchIndex).addItemToIndex("Tatooine", URI.create("https://swapi.dev/api/planets/1/"));
+        verify(searchIndex).addItemToIndex("Tatooine", URI.create("https://swapi.dev/api/people/1/"));
+        verify(searchIndex).addItemToIndex("Tatooine", URI.create("https://swapi.dev/api/people/2/"));
+        verify(searchIndex).addItemToIndex("Tatooine", URI.create("https://swapi.dev/api/films/1/"));
+        verify(searchIndex).addItemToIndex("Tatooine", URI.create("https://swapi.dev/api/films/3/"));
 
-        verify(searchIndex).addItemToIndex("Alderaan", new URI("https://swapi.dev/api/planets/2/"));
-        verify(searchIndex).addItemToIndex("Alderaan", new URI("https://swapi.dev/api/people/5/"));
-        verify(searchIndex).addItemToIndex("Alderaan", new URI("https://swapi.dev/api/people/68/"));
+        verify(searchIndex).addItemToIndex("Alderaan", URI.create("https://swapi.dev/api/planets/2/"));
+        verify(searchIndex).addItemToIndex("Alderaan", URI.create("https://swapi.dev/api/people/5/"));
+        verify(searchIndex).addItemToIndex("Alderaan", URI.create("https://swapi.dev/api/people/68/"));
 
-        verify(searchIndex).addItemToIndex("Yavin IV", new URI("https://swapi.dev/api/planets/3/"));
-        verify(searchIndex).addItemToIndex("Yavin IV", new URI("https://swapi.dev/api/films/1/"));
+        verify(searchIndex).addItemToIndex("Yavin IV", URI.create("https://swapi.dev/api/planets/3/"));
+        verify(searchIndex).addItemToIndex("Yavin IV", URI.create("https://swapi.dev/api/films/1/"));
 
         verifyNoMoreInteractions(searchIndex);
         mockRestServiceServer.verify();
 
     }
+
+    @Test
+    public void crawlPeopleAndPlanets() {
+        mockRestServiceServer.expect(ExpectedCount.once(),
+                        requestTo(URI.create("https://swapi.dev/api/")))
+                .andRespond(withStatus(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body("{ " +
+                                " \"people\": \"https://swapi.dev/api/people/\", " +
+                                " \"planets\": \"https://swapi.dev/api/planets/\" " +
+                                "} "));
+
+        mockRestServiceServer.expect(ExpectedCount.once(),
+                        requestTo(URI.create("https://swapi.dev/api/people/")))
+                .andRespond(withStatus(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body("{" +
+                                "    \"count\": 3, " +
+                                "    \"next\": null, " +
+                                "    \"previous\": null, " +
+                                "    \"results\": [" +
+                                "        {" +
+                                "            \"name\": \"Luke Skywalker\", " +
+                                "            \"height\": \"172\", " +
+                                "            \"mass\": \"77\", " +
+                                "            \"hair_color\": \"blond\", " +
+                                "            \"skin_color\": \"fair\", " +
+                                "            \"eye_color\": \"blue\", " +
+                                "            \"birth_year\": \"19BBY\", " +
+                                "            \"gender\": \"male\", " +
+                                "            \"homeworld\": \"https://swapi.dev/api/planets/1/\", " +
+                                "            \"films\": [" +
+                                "                \"https://swapi.dev/api/films/1/\", " +
+                                "                \"https://swapi.dev/api/films/6/\"" +
+                                "            ], " +
+                                "            \"species\": [], " +
+                                "            \"vehicles\": [], " +
+                                "            \"starships\": [" +
+                                "                \"https://swapi.dev/api/starships/22/\"" +
+                                "            ], " +
+                                "            \"url\": \"https://swapi.dev/api/people/1/\"" +
+                                "        }, " +
+                                "        {" +
+                                "            \"name\": \"R2-D2\", " +
+                                "            \"height\": \"96\", " +
+                                "            \"mass\": \"32\", " +
+                                "            \"hair_color\": \"n/a\", " +
+                                "            \"skin_color\": \"white, blue\", " +
+                                "            \"eye_color\": \"red\", " +
+                                "            \"birth_year\": \"33BBY\", " +
+                                "            \"gender\": \"n/a\", " +
+                                "            \"homeworld\": \"https://swapi.dev/api/planets/8/\", " +
+                                "            \"films\": [" +
+                                "                \"https://swapi.dev/api/films/6/\"" +
+                                "            ], " +
+                                "            \"species\": [" +
+                                "                \"https://swapi.dev/api/species/2/\"" +
+                                "            ], " +
+                                "            \"vehicles\": [], " +
+                                "            \"starships\": [], " +
+                                "            \"url\": \"https://swapi.dev/api/people/3/\"" +
+                                "        } " +
+                                "   ]" +
+                                "}"));
+
+        mockRestServiceServer.expect(ExpectedCount.once(),
+                        requestTo(URI.create("https://swapi.dev/api/planets/")))
+                .andRespond(withStatus(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body("{" +
+                                "    \"next\": null, " +
+                                "    \"previous\": null, " +
+                                "    \"results\": [" +
+                                "        {" +
+                                "            \"name\": \"Tatooine\", " +
+                                "            \"residents\": [" +
+                                "                \"https://swapi.dev/api/people/1/\", " +
+                                "                \"https://swapi.dev/api/people/2/\" " +
+                                "            ], " +
+                                "            \"films\": [], " +
+                                "            \"url\": \"https://swapi.dev/api/planets/1/\"" +
+                                "        }, " +
+                                "        {" +
+                                "            \"name\": \"Alderaan\", " +
+                                "            \"residents\": [" +
+                                "                \"https://swapi.dev/api/people/1/\", " +
+                                "                \"https://swapi.dev/api/people/3/\" " +
+                                "            ], " +
+                                "            \"films\": [], " +
+                                "            \"url\": \"https://swapi.dev/api/planets/2/\"" +
+                                "        } " +
+                                "   ] " +
+                                " }"));
+        crawler.crawl();
+
+        verify(searchIndex).addItemToIndex("Tatooine", URI.create("https://swapi.dev/api/planets/1/"));
+        verify(searchIndex).addItemToIndex("Tatooine", URI.create("https://swapi.dev/api/people/1/"));
+        verify(searchIndex).addItemToIndex("Tatooine", URI.create("https://swapi.dev/api/people/2/"));
+
+        verify(searchIndex).addItemToIndex("Alderaan", URI.create("https://swapi.dev/api/planets/2/"));
+        verify(searchIndex).addItemToIndex("Alderaan", URI.create("https://swapi.dev/api/people/1/"));
+        verify(searchIndex).addItemToIndex("Alderaan", URI.create("https://swapi.dev/api/people/3/"));
+
+        verify(searchIndex).addItemToIndex("Luke Skywalker", URI.create("https://swapi.dev/api/people/1/"));
+        verify(searchIndex).addItemToIndex("Luke Skywalker", URI.create("https://swapi.dev/api/planets/1/"));
+        verify(searchIndex).addItemToIndex("Luke Skywalker", URI.create("https://swapi.dev/api/films/1/"));
+        verify(searchIndex).addItemToIndex("Luke Skywalker", URI.create("https://swapi.dev/api/starships/22/"));
+
+        verify(searchIndex).addItemToIndex("R2-D2", URI.create("https://swapi.dev/api/people/3/"));
+        verify(searchIndex).addItemToIndex("R2-D2", URI.create("https://swapi.dev/api/planets/8/"));
+        verify(searchIndex).addItemToIndex("R2-D2", URI.create("https://swapi.dev/api/films/6/"));
+        verify(searchIndex).addItemToIndex("R2-D2", URI.create("https://swapi.dev/api/species/2/"));
+
+    }
+
 
 }

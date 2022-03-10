@@ -1,7 +1,6 @@
 package xalbrech.exercises.starwars.index;
 
 import java.net.URI;
-import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -32,15 +31,15 @@ public class SearchIndex {
     public Collection<URI> search(String phrase) {
 
         if (phrase == null || "".equals(phrase)) {
-            return Collections.emptyList();
+            return Collections.emptySet();
         }
 
         String[] words = phrase.split("[\\s,]");
-        return Stream.of(words)
-                      .map(index::get)
-                      .filter(Objects::nonNull)
-                      .flatMap(Set::stream)
-                      .collect(Collectors.toList());
+        return Stream.concat(Stream.of(phrase), Stream.of(words))
+                .map(index::get)
+                .filter(Objects::nonNull)
+                .flatMap(Set::stream)
+                .collect(Collectors.toSet());
     }
 
 }
