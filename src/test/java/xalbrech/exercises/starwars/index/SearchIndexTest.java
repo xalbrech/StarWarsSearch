@@ -25,17 +25,17 @@ public class SearchIndexTest {
 
     @Test
     public void searchNullOrEmptyPhraseShallReturnEmptyCollection() {
-        assertEquals(Collections.EMPTY_LIST, searcher.search(null));
+        assertEquals(Collections.emptySet(), searcher.search(null));
     }
 
     @Test
     public void searchEmptyPhraseShallReturnEmptyCollection() {
-        assertEquals(Collections.EMPTY_LIST, searcher.search(""));
+        assertEquals(Collections.emptySet(), searcher.search(""));
     }
 
     @Test
     public void searchNonExistentPlanetShallReturnEmptyResult() {
-        assertEquals(Collections.EMPTY_LIST, searcher.search("PlanetNeverSeen"));
+        assertEquals(Collections.emptySet(), searcher.search("PlanetNeverSeen"));
     }
 
     @Test
