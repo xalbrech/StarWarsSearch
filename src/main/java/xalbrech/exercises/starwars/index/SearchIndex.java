@@ -34,8 +34,9 @@ public class SearchIndex {
             return Collections.emptySet();
         }
 
-        String[] words = phrase.split("[\\s,]");
+        String[] words = phrase.split(",");
         return Stream.concat(Stream.of(phrase), Stream.of(words))
+                .map(String::trim)
                 .map(index::get)
                 .filter(Objects::nonNull)
                 .flatMap(Set::stream)

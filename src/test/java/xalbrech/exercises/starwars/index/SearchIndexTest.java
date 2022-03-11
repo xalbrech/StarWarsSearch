@@ -54,7 +54,7 @@ public class SearchIndexTest {
     @Test
     public void searchBothTatooineAndAlderaanShallReturnBothUrls() throws MalformedURLException {
         searcher.addItemToIndex("Alderaan", URI.create("https://swapi.dev/api/planets/2/"));
-        Collection<URI> result = searcher.search("Tatooine Alderaan");
+        Collection<URI> result = searcher.search("Tatooine, Alderaan");
         assertThat(result, containsInAnyOrder(URI.create("https://swapi.dev/api/planets/1/"),
                 URI.create("https://swapi.dev/api/planets/2/")));
     }
