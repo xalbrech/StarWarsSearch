@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import xalbrech.exercises.starwars.crawler.mapping.ApiEndpointList;
-import xalbrech.exercises.starwars.crawler.mapping.ApiResultClassFactory;
 import xalbrech.exercises.starwars.crawler.mapping.ApiResult;
+import xalbrech.exercises.starwars.crawler.mapping.ApiResultClassFactory;
 import xalbrech.exercises.starwars.index.SearchIndex;
 
 import java.net.URI;
@@ -36,12 +36,20 @@ public class ApiCrawler {
                 .forEach(endpointName -> {
                     URI nextUrl = endpointList.get(endpointName);
                     Class<? extends ApiResult> objectResultClass = ApiResultClassFactory.getResultForEndpointName(endpointName);
-                    if (objectResultClass != null)
-                    do {
-                        ResponseEntity<? extends ApiResult> response = restTemplate.getForEntity(nextUrl, objectResultClass);
-                        response.getBody().populateSearchIndexWithResults(searchIndex);
-                        nextUrl = response.getBody().getNext();
-                    } while (nextUrl != null);
+                    if (objectResultClass != null) {
+                        do {
+                            try {
+                                ResponseEntity<? extends ApiResult> response = restTemplate.getForEntity(nextUrl, objectResultClass);
+                                response.getBody().populateSearchIndexWithResults(searchIndex);
+                                nextUrl = response.getBody().getNext();
+                            } catch (Exception e) {
+                                log.error("Error while populating search index with API objects name {}. Skipping.", endpointName);
+                                log.error("Exception {}", e);
+                            }
+                        } while (nextUrl != null);
+                    } else {
+                        log.error("No mapping class found for object name {}. Skipping.", endpointName);
+                    }
                 });
 
 
