@@ -1,4 +1,4 @@
-#Star Wars API search application
+# Star Wars API search application
 
 Simple search tool that performs a name-based search on
 the data set provided by Star Wars API: https://swapi.dev/
