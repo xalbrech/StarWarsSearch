@@ -19,11 +19,6 @@ public class StarWarsSearchApp {
 
     private static final Logger log = LoggerFactory.getLogger(StarWarsSearchApp.class);
 
-    /*@Bean
-    public RestTemplateBuilder restTemplateBuilder() {
-        return new RestTemplateBuilder();
-    }*/
-
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder.build();
@@ -52,6 +47,7 @@ public class StarWarsSearchApp {
     public CommandLineRunner run(ApiCrawler apiCrawler, SearchIndex searchIndex) throws Exception {
         return args -> {
             apiCrawler.crawl();
+            log.info("Population of search index completed.");
         };
     }
 
