@@ -15,6 +15,11 @@ public class SearchController {
     @Autowired
     private SearchIndex searchIndex;
 
+    /**
+     * The search service exposed by the application.
+     * @param term
+     * @return
+     */
     @GetMapping("/starwars")
     public SearchResult search(@RequestParam String term) {
         return new SearchResult(term, searchIndex.search(term));
