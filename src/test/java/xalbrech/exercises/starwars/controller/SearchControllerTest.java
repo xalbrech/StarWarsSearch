@@ -53,4 +53,13 @@ class SearchControllerTest {
         verify(searchIndex).search("test");
     }
 
+    @Test
+    public void searchWithException() throws Exception {
+        when(searchIndex.search("test")).thenThrow(new RuntimeException("test message"));
+
+        mockMvc.perform(get("/starwars?term=test"))
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.errorMessage", is("test message")));
+    }
+
 }
