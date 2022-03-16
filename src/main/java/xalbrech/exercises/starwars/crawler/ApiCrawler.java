@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import xalbrech.exercises.starwars.crawler.mapping.ApiEndpointList;
 import xalbrech.exercises.starwars.crawler.mapping.ApiResult;
@@ -15,12 +16,14 @@ import java.net.URI;
 /**
  * Traverses the API and populates the search index with data found
  */
+@Component
 public class ApiCrawler {
 
     private static final Logger log = LoggerFactory.getLogger(ApiCrawler.class);
 
     @Autowired
     private SearchIndex searchIndex;
+
     @Autowired
     private RestTemplate restTemplate;
 

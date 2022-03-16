@@ -15,46 +15,46 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SearchIndexTest {
 
-    private SearchIndex searcher;
+    private SearchIndex searchIndex;
 
     @BeforeEach
     public void setUp() throws MalformedURLException {
-        searcher = new SearchIndex();
-        searcher.addItemToIndex("Tatooine", URI.create("https://swapi.dev/api/planets/1/"));
+        searchIndex = new SearchIndex();
+        searchIndex.addItemToIndex("Tatooine", URI.create("https://swapi.dev/api/planets/1/"));
     }
 
     @Test
     public void searchNullOrEmptyPhraseShallReturnEmptyCollection() {
-        assertEquals(Collections.emptySet(), searcher.search(null));
+        assertEquals(Collections.emptySet(), searchIndex.search(null));
     }
 
     @Test
     public void searchEmptyPhraseShallReturnEmptyCollection() {
-        assertEquals(Collections.emptySet(), searcher.search(""));
+        assertEquals(Collections.emptySet(), searchIndex.search(""));
     }
 
     @Test
     public void searchNonExistentPlanetShallReturnEmptyResult() {
-        assertEquals(Collections.emptySet(), searcher.search("PlanetNeverSeen"));
+        assertEquals(Collections.emptySet(), searchIndex.search("PlanetNeverSeen"));
     }
 
     @Test
     public void searchTatooineShallReturnItsUrl() throws MalformedURLException {
-        Collection<URI> result = searcher.search("Tatooine");
+        Collection<URI> result = searchIndex.search("Tatooine");
         assertThat(result, contains(URI.create("https://swapi.dev/api/planets/1/")));
     }
 
     @Test
     public void searchAlderaanShallReturnItsUrl() throws MalformedURLException {
-        searcher.addItemToIndex("Alderaan", URI.create("https://swapi.dev/api/planets/2/"));
-        Collection<URI> result = searcher.search("Alderaan");
+        searchIndex.addItemToIndex("Alderaan", URI.create("https://swapi.dev/api/planets/2/"));
+        Collection<URI> result = searchIndex.search("Alderaan");
         assertThat(result, contains(URI.create("https://swapi.dev/api/planets/2/")));
     }
 
     @Test
     public void searchBothTatooineAndAlderaanShallReturnBothUrls() throws MalformedURLException {
-        searcher.addItemToIndex("Alderaan", URI.create("https://swapi.dev/api/planets/2/"));
-        Collection<URI> result = searcher.search("Tatooine, Alderaan");
+        searchIndex.addItemToIndex("Alderaan", URI.create("https://swapi.dev/api/planets/2/"));
+        Collection<URI> result = searchIndex.search("Tatooine, Alderaan");
         assertThat(result, containsInAnyOrder(URI.create("https://swapi.dev/api/planets/1/"),
                 URI.create("https://swapi.dev/api/planets/2/")));
     }
@@ -62,10 +62,10 @@ public class SearchIndexTest {
 
     @Test
     public void oneSearchTermsMayReturnMultipleResults() throws MalformedURLException {
-        searcher.addItemToIndex("Alderaan", URI.create("https://swapi.dev/api/planets/2/"));
-        searcher.addItemToIndex("Alderaan", URI.create("https://swapi.dev/api/vehicles/3/"));
-        searcher.addItemToIndex("Alderaan", URI.create("https://swapi.dev/api/films/1/"));
-        Collection<URI> result = searcher.search("Alderaan");
+        searchIndex.addItemToIndex("Alderaan", URI.create("https://swapi.dev/api/planets/2/"));
+        searchIndex.addItemToIndex("Alderaan", URI.create("https://swapi.dev/api/vehicles/3/"));
+        searchIndex.addItemToIndex("Alderaan", URI.create("https://swapi.dev/api/films/1/"));
+        Collection<URI> result = searchIndex.search("Alderaan");
         assertThat(result, containsInAnyOrder(URI.create("https://swapi.dev/api/planets/2/"),
                 URI.create("https://swapi.dev/api/vehicles/3/"),
                 URI.create("https://swapi.dev/api/films/1/")));

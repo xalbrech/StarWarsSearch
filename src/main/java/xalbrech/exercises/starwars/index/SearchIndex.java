@@ -1,5 +1,7 @@
 package xalbrech.exercises.starwars.index;
 
+import org.springframework.stereotype.Component;
+
 import java.net.URI;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -8,10 +10,11 @@ import java.util.stream.Stream;
 /**
  * Maintain the search index and provide lookups on it ({@link #search(String)}.
  */
+@Component
 public class SearchIndex {
 
     // The index itself is a multi-map, maintaining a set of URLs for each keyword.
-    Map<String, Set<URI>> index = new HashMap<>();
+    private Map<String, Set<URI>> index = new HashMap<>();
 
     /**
      * Add a new item to index.

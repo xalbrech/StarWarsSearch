@@ -21,16 +21,13 @@ import static org.mockito.Mockito.when;
 class SearchControllerTest {
 
     @MockBean
-    SearchIndex searchIndex;
-
-    @MockBean
-    CommandLineRunner commandLineRunner;
+    private SearchIndex searchIndex;
 
     @Autowired
-    SearchController searchController;
+    private SearchController searchController;
 
     @Mock
-    SearchResult searchResult;
+    private SearchResult searchResult;
 
     @Test
     public void searchReachesSearchIndex() throws MalformedURLException {

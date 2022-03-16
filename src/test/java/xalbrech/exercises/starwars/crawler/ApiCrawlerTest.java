@@ -20,15 +20,11 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 
-@RestClientTest
+@RestClientTest(ApiCrawler.class)
 public class ApiCrawlerTest {
 
     @MockBean
     private SearchIndex searchIndex;
-
-    // Mock out CLR so that it doesn't get called. Not sure how to do this better atm (Test-specific config?)
-    @MockBean
-    private CommandLineRunner commandLineRunner;
 
     @Autowired
     private MockRestServiceServer mockRestServiceServer;
