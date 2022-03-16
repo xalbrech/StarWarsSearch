@@ -13,7 +13,7 @@ import xalbrech.exercises.starwars.crawler.ApiCrawler;
 import xalbrech.exercises.starwars.index.SearchIndex;
 
 /**
- * Main app class - actual main method to start the app, definition of necesary beans
+ * Main app class - actual main method to start the app, definition of necessary beans.
  */
 @SpringBootApplication
 public class StarWarsSearchApp {
