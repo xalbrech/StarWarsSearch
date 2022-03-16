@@ -17,7 +17,7 @@ Upon start, the application collects all API data and stores them in an index.
 Aditionally, it exposes a search services at `/starwars`. This service allows to search
 for API objects by name (or title in case of films).
 
-### Examples
+### Example calls of the service:
 * `/starwars?term=Tatooine` returns an array of URLs related to that name.
 * `/starwars?term=Tatooine,R2-D2` returns an array of URLs related either to
                 Tatooine (the planet) or R2-D2 the robot. 
