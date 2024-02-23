@@ -1,4 +1,3 @@
-#Test
 # Star Wars API search application
 
 Simple search tool that performs a name-based search on
